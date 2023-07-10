@@ -14,7 +14,7 @@ public static class PropertyParser
         {
             try
             {
-                output.Append( ParseProperty(str));
+                output.Append(ParseProperty(str));
             }
             catch (Exception e)
             {
@@ -40,7 +40,8 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
 
 ";
     }
-    static string GetDataFromInput(string input, out string? type)
+
+    private static string GetDataFromInput(string input, out string? type)
     {
         int closingBracketIndex = input.IndexOf(']');
 
@@ -67,12 +68,12 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         throw new Exception("Invalid input format");
     }
 
-    static string GetComment(string input)
+    private static string GetComment(string input)
     {
         var result = new StringBuilder();
         var word = new StringBuilder();
         bool capitalizedPrev = true;
-
+        bool makeNextUppercase = false;
 
         input = Regex.Replace(input, @"\[.*?\]", "");
 
@@ -80,22 +81,30 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         {
             if (currentChar is '-' or '_')
             {
+                makeNextUppercase = true;
                 continue;
             }
 
-            if (!capitalizedPrev && char.IsUpper(currentChar) ||
-                (char.IsLower(currentChar) && !word.ToString().Skip(1).Any(char.IsLower) && word.Length > 1))
+            var tmpCurrentChar = currentChar;
+            if (makeNextUppercase)
+            {
+                makeNextUppercase = false;
+                tmpCurrentChar = char.ToUpper(tmpCurrentChar);
+            }
+
+            if (!capitalizedPrev && char.IsUpper(tmpCurrentChar) ||
+                (char.IsLower(tmpCurrentChar) && !word.ToString().Skip(1).Any(char.IsLower) && word.Length > 1))
             {
                 var parsedWord = GetParsedWord(word.ToString(), out bool areAllCapital);
                 if (areAllCapital)
                 {
                     result.Append(parsedWord[..^1]);
-                    word = new StringBuilder(parsedWord[^1] + char.ToLower(currentChar).ToString());
+                    word = new StringBuilder(parsedWord[^1] + char.ToLower(tmpCurrentChar).ToString());
                 }
                 else
                 {
                     result.Append(parsedWord);
-                    word = new StringBuilder(char.ToLower(currentChar).ToString());
+                    word = new StringBuilder(char.ToLower(tmpCurrentChar).ToString());
                 }
                 
                 result.Append(' ');
@@ -103,17 +112,17 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
             }
             else
             {
-                word.Append(currentChar);
+                word.Append(tmpCurrentChar);
             }
 
-            capitalizedPrev = char.IsUpper(currentChar);
+            capitalizedPrev = char.IsUpper(tmpCurrentChar);
         }
 
         result.Append(GetParsedWord(word.ToString(), out _));
         return result.ToString();
     }
 
-    static string GetVariable(string pascalCaseComment)
+    private static string GetVariable(string pascalCaseComment)
     {
         var result = new StringBuilder();
         var words = pascalCaseComment.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -126,10 +135,22 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         return result.ToString();
     }
 
-    static string GetParsedWord(string input, out bool areAllCapital)
+    private static string GetParsedWord(string input, out bool areAllCapital)
     {
-        Abbreviations.TryGetValue(input.ToLower(), out var result);
-        result ??= input;
+        string? result;
+        var endingNumbers = input[^input.Reverse().TakeWhile(char.IsDigit).Count()..];
+        if (string.IsNullOrWhiteSpace(endingNumbers))
+        {
+            Abbreviations.TryGetValue(input.ToLower(), out result);
+            result ??= input;
+        }
+        else
+        {
+            Abbreviations.TryGetValue(input[..^endingNumbers.Length].ToLower(), out result);
+            result = string.IsNullOrEmpty(result) ? input : result + endingNumbers;
+        }
+
+        
         if (result.Skip(1).Any(char.IsLower) || result.Length is 1)
         {
             areAllCapital = false; 
@@ -143,7 +164,7 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         return  result;
     }
 
-    static string GetType(string? comment, string variable)
+    private static string GetType(string? comment, string variable)
     {
         if (comment != null)
         {
@@ -166,12 +187,13 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         return "string";
     }
 
-    static readonly Dictionary<string, string> Abbreviations = new()
+    private static readonly Dictionary<string, string> Abbreviations = new()
     {
         { "cust", "customer" },
         { "num", "number" },
         { "prod", "product" },
         { "equip", "equipment" },
-        { "est", "estimate" }
+        { "est", "estimate" },
+        { "descr", "description" }
     };
 }
