@@ -14,7 +14,7 @@ public static class PropertyParser
         {
             try
             {
-                output.Append( ParseProperty(str) + "\r\n" );
+                output.Append( ParseProperty(str));
             }
             catch (Exception e)
             {
