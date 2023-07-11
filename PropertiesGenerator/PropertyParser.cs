@@ -5,7 +5,7 @@ namespace PropertiesGenerator;
 
 public static class PropertyParser
 {
-    public static string ParseProperties(string input)
+    public static string ParseProperties(string input, int choice)
     {
         char[] delimiters = { '\r', '\n' };
         string[] strings = input.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
@@ -14,7 +14,7 @@ public static class PropertyParser
         {
             try
             {
-                output.Append(ParseProperty(str));
+                output.Append(ParseProperty(str, choice));
             }
             catch (Exception e)
             {
@@ -22,16 +22,29 @@ public static class PropertyParser
             }
         }
 
-        return output.ToString().Trim();
+        var result = output.ToString().Trim();
+        return choice == 4 ?
+            result.Remove(result.Length - 1) :
+            result;
     }
 
-    public static string ParseProperty(string input)
+    public static string ParseProperty(string input, int choice)
     {
         var variable = GetDataFromInput(input, out string? type);
+        return choice switch
+        {
+            1 => GetDtoProperty(variable, type),
+            2 => GetDetailsProperty(variable, type),
+            3 => GetDetailsDataProperty(variable, type),
+            4 => GetMapDefinition(variable),
+            _ => throw new Exception("Invalid choice")
+        };
+    }
 
-        var pascalCaseComment = GetComment(variable);
-        string propertyType = GetType(type, pascalCaseComment);
-        string pascalCaseVariable = GetVariable(pascalCaseComment);
+    private static string GetDtoProperty(string variable, string? type)
+    {
+        var (pascalCaseComment, propertyType, pascalCaseVariable) = 
+            GetParsedFromVariableAndType(variable, type);
 
         return $@"/// <summary>
 /// {pascalCaseComment}.
@@ -41,6 +54,45 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
 ";
     }
 
+    private static string GetDetailsProperty(string variable, string? type)
+    {
+        var (_, propertyType, pascalCaseVariable) =
+            GetParsedFromVariableAndType(variable, type);
+
+        return $@"public {propertyType}? {pascalCaseVariable} {{ get; set; }}
+
+";
+    }
+
+    private static string GetDetailsDataProperty(string variable, string? type)
+    {
+        var (_, propertyType, pascalCaseVariable) =
+            GetParsedFromVariableAndType(variable, type);
+
+        return $@"[JsonProperty(""{variable}"")]
+public {propertyType}? {pascalCaseVariable} {{ get; set; }}
+
+";
+    }
+
+    private static string GetMapDefinition(string variable)
+    {
+         var (_, _, pascalCaseVariable) =
+            GetParsedFromVariableAndType(variable);
+
+        return $@"{pascalCaseVariable} = objectToMap.{pascalCaseVariable},
+";
+    }
+
+    private static (string, string, string) GetParsedFromVariableAndType(string variable, string? type = null)
+    {
+        var pascalCaseComment = GetComment(variable);
+        string propertyType = GetType(type, pascalCaseComment);
+        string pascalCaseVariable = GetVariable(pascalCaseComment);
+
+        return (pascalCaseComment, propertyType, pascalCaseVariable);
+    }
+    
     private static string GetDataFromInput(string input, out string? type)
     {
         int closingBracketIndex = input.IndexOf(']');

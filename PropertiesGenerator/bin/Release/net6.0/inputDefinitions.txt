@@ -1,0 +1,115 @@
+[Estimate]CustNum - customerNum (Alpha 10)
+[Estimate]ProdGroup - prodGroup (Alpha 40)
+[Estimate]Shape - shape (Alpha 40)
+[Estimate]Tag - tag (Alpha 3) (only if enterprise)
+[Estimate]Product_Number - productNumber (Alpha 30)
+[Estimate]ContactID - contactID (Alpha 40)
+[Estimate]OTSAssocNum - salesRepNum (Alpha 10)
+[Estimate]EndUserNum - endUserNum (Alpha 10)
+[Estimate]Application - description (Alpha 80)
+[Estimate]AdditionalDescr - additionalDescription (Alpha 80)
+[Estimate]PriceMode - priceMode (Alpha 20)
+[Estimate]Quantity1 - quantity1 (Integer)
+[Estimate]Quantity2 - quantity2 (Integer)
+[Estimate]Quantity3 - quantity3 (Integer)
+[Estimate]Quantity4 - quantity4 (Integer)
+[Estimate]Quantity5 - quantity5 (Integer)
+[Estimate]Quantity6 - quantity6 (Integer)
+[Estimate]PressNum - pressNum (Alpha 10)
+[Estimate]Equip_ID - equipID (Alpha 10)
+[Estimate]ToolNo1 - toolNo1 (Alpha 10)
+[Estimate]ToolNo2 - toolNo2 (Alpha 10)
+[Estimate]ToolNo3 - toolNo3 (Alpha 10)
+[Estimate]ToolNo4 - toolNo4 (Alpha 10)
+[Estimate]ToolNo5 - toolNo5 (Alpha 10)
+[Estimate]CornerRadius - cornerRadius (Real)
+[Estimate]SizeAcross - sizeAcross (Real)
+[Estimate]SizeAround - sizeAround (Real)
+[Estimate]NoAcross - numberAcross (Integer)
+[Estimate]NoAround - numberAround (Integer)
+[Estimate]FinalUnWind - finalUnwind (Alpha 15)
+[Estimate]ColumnPerf - columnPerf (Real)
+[Estimate]RowPerf - rowPerf (Real)
+[Estimate]ColSpace - columnSpace (Real)
+[Estimate]RowSpace - rowSpace (Real)
+[Estimate]CarrierWidth - carrierWidth (Real)
+[Estimate]NewTool - newTool (Boolean)
+[Estimate]Tool_NumberAround - toolNumberAround(Integer)
+[Estimate]ToolOverride - toolOverride (Real)
+[Estimate]AmortizeToolCost - toolAmortize (Boolean)
+[Estimate]StockNum1 - stockNum1 (Alpha 10)
+[Estimate]StockNum2 - stockNum2 (Alpha 10)
+[Estimate]StockNum3 - stockNum3 (Alpha 10)
+[Estimate]StockNotes - stockNotes (text)
+[Estimate]PrintInk_1_NoColors - pressNumColors1 (Integer)
+[Estimate]PrintInk_2_NoColors (HP Only) -  pressNumColors2 (Integer)
+[Estimate]FloodInk_1_NoColors - pressNumFloods1 (Integer)
+[Estimate]Eq_PrintInk_1_NoColors - equipNumColors (Integer)
+[Estimate]Eq_FloodInk_1_NoColors - equipNumFloods (Integer)
+[Estimate]ColorDescr - colorDescription (Alpha 80)
+[Estimate]NoPlateChange - noPlateChanges (Integer)
+[Estimate]PlateChangeAction - plateChangeAction (Alpha 20)
+[Estimate]NoColorChange - noColorChanges (Integer)
+[Estimate]ColorChangeAction - ColorChangeAction (Alpha 20)
+[Estimate]NoLabAcrossFin - noLabelsAcrossFin (Integer)
+[Estimate]LabelsPer_ - labelsPer (Integer)
+[Estimate]LetterNotes - letterNotes (Text)
+[Estimate]EstimatorsNotes - estimatorNotes (Text)
+[Estimate]CriticalQuality - criticalQuality (Text)
+[Estimate]ProfitAdjLabel - profitAdjust (Alpha 20)
+[Estimate]Internet_Submission - internetSubmission (Boolean)
+[Estimate]EstDuration_Status
+[Estimate]EstDuration
+[Estimate]CustName
+[Estimate]CustContact
+[Estimate]SalesRepName
+[Estimate]EndUserName
+[Estimate]PriceMode_Local
+[Estimate]Tool2Descr
+[Estimate]Tool3Descr
+[Estimate]Tool4Descr
+[Estimate]Tool5Descr
+[Estimate]Are_Tools_for_Equip
+[Estimate]StockWidth1
+[Estimate]StockDescr1
+[Estimate]LaminateMSI
+[Estimate]Caliper_Laminat
+[Estimate]StockWidth2
+[Estimate]StockDescr2
+[Estimate]FaceStockMSI
+[Estimate]Caliper_FaceStk
+[Estimate]StockWidth3
+[Estimate]StockDescr3
+[Estimate]AdhesiveMSI
+[Estimate]Caliper_Adhesiv
+[Estimate]InLinePriming_State
+[Estimate]InLinePriming_Rate
+[Estimate]PrintInkType
+[Estimate]FloodInkType
+[Estimate]PlateChangeCost
+[Estimate]ColorChangeCost
+[Estimate]Use_TurretRewinder
+[Estimate]Commission 
+[Estimate]CommissionSource
+[Estimate]CommisionSource_Local
+[Estimate]MFGRepNumber	
+[Estimate]MFGRepName
+[Estimate]MFGRepCommission
+[Estimate]Currency_ID
+[Estimate]Currency_Rate_ID 
+[Estimate]Currency_ExchangeRate
+[Estimate]CustIsDist
+[Est_UserDefined]EquipUserDefined_ID	
+[Est_UserDefined]EstimateNumber
+[Est_UserDefined]Description
+[Est_UserDefined]Notes
+[Est_UserDefined]Order_in_List
+[Est_UserDefined]Press_Number
+[Est_UserDefined]Print_On_Reports
+[Est_UserDefined]UseThisOption
+[Est_UserDefined]Option_Multiplier  
+[Estimate]PlateChangeAction_Local
+[Estimate]ColorChangeAction_Local
+[Estimate]ModifiedBy
+[Estimate]ModifiedTime
+[Estimate]ModifiedDate

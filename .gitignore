@@ -1,3 +1,4 @@
 ﻿.vs
 PropertiesGenerator/obj
 PropertiesGenerator/bin/Debug
+/PropertiesGenerator/bin/Release/net6.0/outputProperties
