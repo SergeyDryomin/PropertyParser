@@ -241,11 +241,11 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
 
     private static readonly Dictionary<string, string> Abbreviations = new()
     {
-        { "cust", "customer" },
-        { "num", "number" },
-        { "prod", "product" },
-        { "equip", "equipment" },
-        { "est", "estimate" },
-        { "descr", "description" }
+        { "cust", "Customer" },
+        { "num", "Number" },
+        { "prod", "Product" },
+        { "equip", "Equipment" },
+        { "est", "Estimate" },
+        { "descr", "Description" }
     };
 }
