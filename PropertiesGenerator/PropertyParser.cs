@@ -68,9 +68,9 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
     {
         var (_, propertyType, pascalCaseVariable) =
             GetParsedFromVariableAndType(variable, type);
-
+        var stringDefault = propertyType == "string" ? " = string.Empty;" : string.Empty;
         return $@"[JsonProperty(""{variable}"")]
-public {propertyType}? {pascalCaseVariable} {{ get; set; }}
+public {propertyType} {pascalCaseVariable} {{ get; set; }}{stringDefault}
 
 ";
     }
@@ -96,28 +96,41 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
     private static string GetDataFromInput(string input, out string? type)
     {
         int closingBracketIndex = input.IndexOf(']');
-
-        if (closingBracketIndex != -1)
+        string variable;
+        try
         {
-            int separatorIndex = input.IndexOfAny(new[] { ' ', '-' }, closingBracketIndex + 1);
-            if (separatorIndex == -1)
-                separatorIndex = input.Length;
-
-            string variable = input.Substring(closingBracketIndex + 1, separatorIndex - closingBracketIndex - 1).Trim();
-            type = null;
-
-            int openingParenIndex = input.LastIndexOf('(');
-            int closingParenIndex = input.LastIndexOf(')');
-
-            if (openingParenIndex != -1 && closingParenIndex != -1)
+            if (closingBracketIndex != -1)
             {
-                type = input.Substring(openingParenIndex + 1, closingParenIndex - openingParenIndex - 1).Trim();
-            }
+                int separatorIndex = input.IndexOfAny(new[] { ' ', '-' }, closingBracketIndex + 1);
+                if (separatorIndex == -1)
+                    separatorIndex = input.Length;
 
-            return variable;
+                variable = input.Substring(closingBracketIndex + 1, separatorIndex - closingBracketIndex - 1).Trim();
+                type = null;
+
+                int openingParenIndex = input.LastIndexOf('(');
+                int closingParenIndex = input.LastIndexOf(')');
+
+                if (openingParenIndex != -1 && closingParenIndex != -1)
+                {
+                    type = input.Substring(openingParenIndex + 1, closingParenIndex - openingParenIndex - 1).Trim();
+                }
+            }
+            else
+            {
+                char[] whitespaceChars = { ' ', '\t', '\n', '\r', '\f', '\v' };
+
+                string[] words = input.Split(whitespaceChars, StringSplitOptions.RemoveEmptyEntries);
+                type = words[1];
+                variable = GetParsedWord(words[0], out _);
+            }
+        }
+        catch
+        {
+            throw new Exception($"Invalid input format {input}");
         }
 
-        throw new Exception("Invalid input format");
+        return variable;
     }
 
     private static string GetComment(string input)
@@ -226,6 +239,7 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
                 "text" => "string",
                 "real" => "float",
                 "integer" => "int",
+                "long" => "long",
                 "boolean" => "bool",
                 _ => "string"
             };
@@ -246,6 +260,7 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         { "prod", "Product" },
         { "equip", "Equipment" },
         { "est", "Estimate" },
-        { "descr", "Description" }
+        { "descr", "Description" },
+        { "desc", "Description" }
     };
 }
