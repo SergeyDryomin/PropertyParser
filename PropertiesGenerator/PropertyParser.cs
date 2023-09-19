@@ -49,7 +49,7 @@ public static class PropertyParser
         return $@"/// <summary>
 /// {pascalCaseComment}.
 /// </summary>
-public {propertyType}? {pascalCaseVariable} {{ get; set; }}
+public {propertyType} {pascalCaseVariable} {{ get; set; }}{GetDefaultString(propertyType)}
 
 ";
     }
@@ -59,7 +59,7 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
         var (_, propertyType, pascalCaseVariable) =
             GetParsedFromVariableAndType(variable, type);
 
-        return $@"public {propertyType}? {pascalCaseVariable} {{ get; set; }}
+        return $@"public {propertyType} {pascalCaseVariable} {{ get; set; }}{GetDefaultString(propertyType)}
 
 ";
     }
@@ -68,9 +68,8 @@ public {propertyType}? {pascalCaseVariable} {{ get; set; }}
     {
         var (_, propertyType, pascalCaseVariable) =
             GetParsedFromVariableAndType(variable, type);
-        var stringDefault = propertyType == "string" ? " = string.Empty;" : string.Empty;
         return $@"[JsonProperty(""{variable}"")]
-public {propertyType} {pascalCaseVariable} {{ get; set; }}{stringDefault}
+public {propertyType} {pascalCaseVariable} {{ get; set; }}{GetDefaultString(propertyType)}
 
 ";
     }
@@ -80,8 +79,13 @@ public {propertyType} {pascalCaseVariable} {{ get; set; }}{stringDefault}
          var (_, _, pascalCaseVariable) =
             GetParsedFromVariableAndType(variable);
 
-        return $@"{pascalCaseVariable} = objectToMap.{pascalCaseVariable},
+        return $@"{pascalCaseVariable} = source.{pascalCaseVariable},
 ";
+    }
+
+    private static string GetDefaultString(string?  propertyType)
+    {
+        return propertyType == "string" ? " = string.Empty;" : string.Empty;
     }
 
     private static (string, string, string) GetParsedFromVariableAndType(string variable, string? type = null)
