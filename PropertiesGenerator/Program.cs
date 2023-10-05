@@ -17,7 +17,7 @@ class Program
 		Console.WriteLine("3 - Definitions to DetailsData C# properties (from buffer into buffer)");
 		Console.WriteLine("4 - Map Definitions (from buffer into buffer)");
 		Console.WriteLine($"5 - All above (from {inputFilePath} file to {outputDirectoryPath} folder)");
-		Console.WriteLine("4 - Map xml definitions (from inputDefinitions.xml)");
+		Console.WriteLine("6 - Map xml definitions (from inputDefinitions.xml)");
 		int choice = int.Parse(Console.ReadLine());
 		if (choice < 5)
 		{
@@ -27,8 +27,6 @@ class Program
 		}
 		else if (choice == 6)
 		{
-			string dataFromFile = "";
-
 			// Load the XML document from the file
 			XmlDocument xmlDoc = new XmlDocument();
 			xmlDoc.Load(xmlInputFilePath);
@@ -47,7 +45,7 @@ class Program
 
 			if (!Directory.Exists(outputDirectoryPath))
 				Directory.CreateDirectory(outputDirectoryPath);
-			dataFromFile = extractedData.ToString();
+			var dataFromFile = extractedData.ToString();
 
 			for (int i = 1; i < 5; i++)
 			{
